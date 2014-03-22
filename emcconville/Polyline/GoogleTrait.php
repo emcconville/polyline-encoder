@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * @package BingTrait
+ * @package GoogleTrait
  * @author  E. McConville <emcconville@emcconville.com>
  * @version 1.0
  * @license GNU Lesser General Public License <http://www.gnu.org/licenses/lgpl.html>
@@ -43,15 +43,24 @@ namespace emcconville\Polyline
          */
         public function encodePoints($points)
         {
+            assert(is_array($points));
             $precision = 5;
             if(method_exists(get_class(),'polylinePrecision'))
                 $precision = (int)$this->polylinePrecision();
             $tuple = 2;
             if(method_exists(get_class(),'polylineTupleSize'))
                 $tuple = (int)$this->polylineTupleSize();
+            $previous = array_fill(0,$tuple,0);
+            
+            // Flatten given points
+            $tmp = array();
+            // http://davidwalsh.name/flatten-nested-arrays-php#comment-18807
+            foreach(new RecursiveIteratorIterator(new RecursiveArrayIterator($points)) as $value)
+                $tmp[] = $value;
+            $points = $tmp;
             $encoded_string = '';
             $index = 0;
-            $previous = array_fill(0,$tuple,0);
+            
             foreach($points as $number) {
                 $number = (float)($number);
                 $number = floor($number * pow(10, $precision));
@@ -80,6 +89,7 @@ namespace emcconville\Polyline
          */
         public function decodeString($str)
         {
+            assert(is_string($str));
             $precision = 5;
             if(method_exists(get_class(),'polylinePrecision'))
                 $precision = (int)$this->polylinePrecision();
@@ -95,8 +105,7 @@ namespace emcconville\Polyline
                     $bit = ord(substr($string,$i++)) - 63;
                     $result |= ($bit & 0x1f) << $shift;
                     $shift += 5;
-                } while( $bit >= 0x20 ) ;
-
+                } while( $bit >= 0x20 );
                 $diff = ($result & 1) ? ~($result >> 1) : ($result >> 1);
                 $number = $previous[$index % $tuple] + $diff;
                 $previous[$index % $tuple] = $number;
@@ -104,10 +113,7 @@ namespace emcconville\Polyline
                 $points[] = $number * 1 / pow(10, $precision);
             }
             if($tuple > 1)
-            {
                 $points = array_chunk($points,$tuple);
-                
-            }
             return $points;
         }
     }
