@@ -46,26 +46,28 @@ namespace emcconville\Polyline
         {
             assert(is_array($points));
             $previous = array(0,0);
-            $return = "";
+            $return   = "";
             foreach($points as $point)
             {
                 // Convert to 32bit integer
-                $latitude = (int)round(array_shift($point) * 1e5);
+                $latitude  = (int)round(array_shift($point) * 1e5);
                 $longitude = (int)round(array_shift($point) * 1e5);
                 
                 // Find delta
-                $deltaLatitude = $latitude - $previous[0];
+                $deltaLatitude  = $latitude  - $previous[0];
                 $deltaLongitude = $longitude - $previous[1];
                 
                 // Save current diff for next calculation
                 $previous = array($latitude,$longitude);
                 
                 // Record number signing
-                $deltaLatitude = ($deltaLatitude << 1) ^ ($deltaLatitude >> 31);
+                $deltaLatitude  = ($deltaLatitude  << 1) ^ ($deltaLatitude  >> 31);
                 $deltaLongitude = ($deltaLongitude << 1) ^ ($deltaLongitude >> 31);
                 
                 // Calculate diagonal line
-                $index = (($deltaLatitude + $deltaLongitude) * ($deltaLatitude + $deltaLongitude + 1) / 2) + $deltaLatitude;
+                $index = (($deltaLatitude + $deltaLongitude    )
+                       *  ($deltaLatitude + $deltaLongitude + 1)
+                       / 2 ) + $deltaLatitude;
                 
                 while($index > 0)
                 {
@@ -96,10 +98,10 @@ namespace emcconville\Polyline
         public function decodeString($str)
         {
             assert(is_string($str));
-            $length = strlen($str);
-            $cursor = 0;
+            $length   = strlen($str);
+            $cursor   = 0;
             $previous = array(0,0);
-            $points = array();
+            $points   = array();
             while($cursor < $length)
             {
                 // Rest line & counter
@@ -120,15 +122,15 @@ namespace emcconville\Polyline
                 $diagonal = (int)((sqrt(8 * $index + 5) - 1) / 2);
                 // Reduce line from to lower point
                 $index -= $diagonal * ($diagonal + 1) / 2;
-                $deltaLatitude = (int)$index;
+                $deltaLatitude  = (int)$index;
                 $deltaLongitude = $diagonal - $deltaLatitude;
                 
                 // Apply signing
-                $deltaLatitude = ($deltaLatitude >> 1) ^ -($deltaLatitude & 1);
+                $deltaLatitude  = ($deltaLatitude  >> 1) ^ -($deltaLatitude  & 1);
                 $deltaLongitude = ($deltaLongitude >> 1) ^ -($deltaLongitude & 1);
                 
                 // Apply delta from previous point
-                $previous[0] = $latitude = $previous[0] + $deltaLatitude;
+                $previous[0] = $latitude  = $previous[0] + $deltaLatitude;
                 $previous[1] = $longitude = $previous[1] + $deltaLongitude;
                 
                 // Return precision
