@@ -13,7 +13,9 @@
     "require": {
         "php": ">=5.4"
     },
-    "replace" : ["emcconville/google-map-polyline-encoding-tool"],
+    "replace" : {
+        "emcconville/google-map-polyline-encoding-tool" : "*"
+    },
     "autoload" : {
         "psr-4" : {
           "emcconville\\Polyline\\" : "src/emcconville/Polyline"
