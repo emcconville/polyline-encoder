@@ -1,3 +1,3 @@
 <?php
-require_once 'emcconville/Polyline/BingTrait.php';
-require_once 'emcconville/Polyline/GoogleTrait.php';
+require_once 'src/emcconville/Polyline/BingTrait.php';
+require_once 'src/emcconville/Polyline/GoogleTrait.php';
