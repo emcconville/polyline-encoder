@@ -43,32 +43,32 @@ namespace emcconville\Polyline
          */
         public function encodePoints($points)
         {
-            $prescision = 5;
-            if(method_exists(get_class(),'polylinePrescision'))
-                $prescision = (int)$this->polylinePrescision();
+            $precision = 5;
+            if(method_exists(get_class(),'polylinePrecision'))
+                $precision = (int)$this->polylinePrecision();
             $tuple = 2;
             if(method_exists(get_class(),'polylineTupleSize'))
                 $tuple = (int)$this->polylineTupleSize();
-    		$encoded_string = '';
-    		$index = 0;
-    		$previous = array_fill(0,$tuple,0);
-    		foreach($points as $number) {
-    			$number = (float)($number);
-    			$number = floor($number * pow(10, $prescision));
-    			$diff = $number - $previous[$index % $tuple];
-    			$previous[$index % $tuple] = $number;
-    			$number = $diff;
-    			$index++;
-    			$number = ($number < 0) ? ~($number << 1) : ($number << 1);
-    			$chunk = '';
-    			while($number >= 0x20) {
-    				$chunk .= chr((0x20 | ($number & 0x1f)) + 63);
-    				$number >>= 5;
-    			}
-    			$chunk .= chr($number + 63);
-    			$encoded_string .= $chunk;
-    		}
-    		return $encoded_string;
+            $encoded_string = '';
+            $index = 0;
+            $previous = array_fill(0,$tuple,0);
+            foreach($points as $number) {
+                $number = (float)($number);
+                $number = floor($number * pow(10, $precision));
+                $diff = $number - $previous[$index % $tuple];
+                $previous[$index % $tuple] = $number;
+                $number = $diff;
+                $index++;
+                $number = ($number < 0) ? ~($number << 1) : ($number << 1);
+                $chunk = '';
+                while($number >= 0x20) {
+                    $chunk .= chr((0x20 | ($number & 0x1f)) + 63);
+                    $number >>= 5;
+                }
+                $chunk .= chr($number + 63);
+                $encoded_string .= $chunk;
+            }
+            return $encoded_string;
         }
         
         /**
@@ -80,35 +80,35 @@ namespace emcconville\Polyline
          */
         public function decodeString($str)
         {
-            $prescision = 5;
-            if(method_exists(get_class(),'polylinePrescision'))
-                $prescision = (int)$this->polylinePrescision();
+            $precision = 5;
+            if(method_exists(get_class(),'polylinePrecision'))
+                $precision = (int)$this->polylinePrecision();
             $tuple = 2;
             if(method_exists(get_class(),'polylineTupleSize'))
                 $tuple = (int)$this->polylineTupleSize();
-    		$points = array();
-    		$index = $i = 0;
-    		$previous = array_fill(0,$tuple,0);
-    		while( $i < strlen($string)  ) {
-    			$shift = $result = 0x00;
-    			do {
-    				$bit = ord(substr($string,$i++)) - 63;
-    				$result |= ($bit & 0x1f) << $shift;
-    				$shift += 5;
-    			} while( $bit >= 0x20 ) ;
+            $points = array();
+            $index = $i = 0;
+            $previous = array_fill(0,$tuple,0);
+            while( $i < strlen($string)  ) {
+                $shift = $result = 0x00;
+                do {
+                    $bit = ord(substr($string,$i++)) - 63;
+                    $result |= ($bit & 0x1f) << $shift;
+                    $shift += 5;
+                } while( $bit >= 0x20 ) ;
 
-    			$diff = ($result & 1) ? ~($result >> 1) : ($result >> 1);
-    			$number = $previous[$index % $tuple] + $diff;
-    			$previous[$index % $tuple] = $number;
-    			$index++;
-    			$points[] = $number * 1 / pow(10, $prescision);
-    		}
+                $diff = ($result & 1) ? ~($result >> 1) : ($result >> 1);
+                $number = $previous[$index % $tuple] + $diff;
+                $previous[$index % $tuple] = $number;
+                $index++;
+                $points[] = $number * 1 / pow(10, $precision);
+            }
             if($tuple > 1)
             {
                 $points = array_chunk($points,$tuple);
                 
             }
-    		return $points;
+            return $points;
         }
     }
 }
