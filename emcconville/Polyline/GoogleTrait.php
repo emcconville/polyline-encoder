@@ -55,7 +55,7 @@ namespace emcconville\Polyline
             // Flatten given points
             $tmp = array();
             // http://davidwalsh.name/flatten-nested-arrays-php#comment-18807
-            foreach(new RecursiveIteratorIterator(new RecursiveArrayIterator($points)) as $value)
+            foreach(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($points)) as $value)
                 $tmp[] = $value;
             $points = $tmp;
             $encoded_string = '';
@@ -84,12 +84,12 @@ namespace emcconville\Polyline
          * Convert ANSI string into array of points
          *
          * @link https://developers.google.com/maps/documentation/utilities/polylinealgorithm
-         * @param string $encoded
+         * @param string $string
          * @return array or FALSE on failure
          */
-        public function decodeString($str)
+        public function decodeString($string)
         {
-            assert(is_string($str));
+            assert(is_string($string));
             $precision = 5;
             if(method_exists(get_class(),'polylinePrecision'))
                 $precision = (int)$this->polylinePrecision();
