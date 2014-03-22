@@ -15,7 +15,7 @@
     },
     "autoload" : {
         "psr-4" : {
-          "emcconville\\" : "src/"
+          "emcconville\\Polyline\\" : "src/emcconville/Polyline"
         }
     }
 }
