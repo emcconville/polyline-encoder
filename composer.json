@@ -1,0 +1,22 @@
+{
+    "name": "emcconville/polyline-encoder",
+    "type": "library",
+    "description": "PHP Traits algorithms for Encoded Polyline & Bing Point Compression",
+    "keywords": ["google", "maps", "bing", "polyline", "point", "compression"],
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Eric McConville",
+            "email": "emcconville@emcconville.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload" : {
+        "psr-4" : {
+          "emcconville" : "src/"
+        }
+    }
+}
+
