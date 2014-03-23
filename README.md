@@ -29,7 +29,7 @@ curl -sS https://getcomposer.org/installer | php
 ```
 ## Usage
 
-Both `BingTrait` & `GoogleTrait` over the same two methods.
+Both `BingTrait` & `GoogleTrait` cover the same two methods.
 
 *string* &lt;object&gt;**::encodePoints**( *array* $points )
 ```php
@@ -48,7 +48,7 @@ $bingObject->encodePoints($points);   //=> "yg7qol5jxJjqX3iH01W5sG"
 *array*  &lt;object&gt;**::decodeString**( *string* $string )
 
 ```php
-// Restore list from encode string
+// Restore list from encode string.
 $points = $googleObject->decodeString("wxt~Fd`yuOCuErBC?vEoB@");
 $points[3]; //=> array(41.89028,-87.62385)
 $points = $bingObject->decodeString("yg7qol5jxJjqX3iH01W5sG");
@@ -59,7 +59,7 @@ $points[4]; //=> array(41.89084,-87.62386)
 
 ```php
 
-// Apply Google Trait
+// Apply Google Trait.
 class MyGooglePolyline
 {
   use emcconville\Polyline\GoogleTrait;
@@ -71,8 +71,8 @@ class MyGooglePolyline
 
 ```php
 
-// Apply Bing Trait
-class MyGooglePolyline
+// Apply Bing Trait.
+class MyBingPolyline
 {
   use emcconville\Polyline\BingTrait;
 }
@@ -82,13 +82,13 @@ class MyGooglePolyline
 ### OSRM Map
 
 ```php
-// Apply Google Trait with precision overwrite
-class MyGooglePolyline
+// Apply Google Trait with precision overwrite.
+class MyProjectOsrmPolyline
 {
   use emcconville\Polyline\GoogleTrait;
   
   /**
-   * Implement precision method in sub-class
+   * Implement precision method in sub-class.
    * @return int
    */
   public function polylinePrecision()
