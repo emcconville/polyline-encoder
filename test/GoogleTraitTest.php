@@ -22,8 +22,6 @@ class GoogleTraitTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->object = new GooglePolyline();
-        if(is_null($this->object))
-            $this->markTestSkipped('Trait not loaded');
     }
     
     /**

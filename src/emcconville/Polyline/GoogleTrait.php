@@ -46,17 +46,24 @@ namespace emcconville\Polyline
             assert(is_array($points));
             $precision = 5;
             if(method_exists(get_class(),'polylinePrecision'))
+            {
                 $precision = (int)$this->polylinePrecision();
+            }
             $tuple = 2;
             if(method_exists(get_class(),'polylineTupleSize'))
+            {
                 $tuple = (int)$this->polylineTupleSize();
+            }
+            // Zero fill previous point place holder
             $previous = array_fill(0,$tuple,0);
             
             // Flatten given points
             $tmp = array();
             // http://davidwalsh.name/flatten-nested-arrays-php#comment-18807
             foreach(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($points)) as $value)
+            {
                 $tmp[] = $value;
+            }
             $points = $tmp;
             $encoded_string = '';
             $index = 0;
@@ -85,17 +92,21 @@ namespace emcconville\Polyline
          *
          * @link https://developers.google.com/maps/documentation/utilities/polylinealgorithm
          * @param string $string
-         * @return array or FALSE on failure
+         * @return array
          */
         public function decodeString($string)
         {
             assert(is_string($string));
             $precision = 5;
             if(method_exists(get_class(),'polylinePrecision'))
+            {
                 $precision = (int)$this->polylinePrecision();
+            }
             $tuple = 2;
             if(method_exists(get_class(),'polylineTupleSize'))
+            {
                 $tuple = (int)$this->polylineTupleSize();
+            }
             $points = array();
             $index = $i = 0;
             $previous = array_fill(0,$tuple,0);
@@ -113,7 +124,9 @@ namespace emcconville\Polyline
                 $points[] = $number * 1 / pow(10, $precision);
             }
             if($tuple > 1)
+            {
                 $points = array_chunk($points,$tuple);
+            }
             return $points;
         }
     }
