@@ -1,11 +1,8 @@
 <?php
 
-class BingPolyline
-{
-    use \emcconville\Polyline\BingTrait;
-}
+namespace emcconville\Polyline\BingTrait;
 
-class BingTraitTest extends PHPUnit_Framework_TestCase
+class BingTraitTest extends \PHPUnit_Framework_TestCase
 {
     protected $object = NULL;
     protected $encoded = 'vx1vilihnM6hR7mEl2Q';
@@ -18,9 +15,7 @@ class BingTraitTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->object = new BingPolyline();
-        if(is_null($this->object))
-            $this->markTestSkipped('Trait not loaded');
+        $this->object = $this->getObjectForTrait(__NAMESPACE__);
     }
     
     /**
