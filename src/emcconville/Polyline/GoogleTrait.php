@@ -44,16 +44,9 @@ namespace emcconville\Polyline
         public function encodePoints($points)
         {
             assert(is_array($points));
-            $precision = 5;
-            if(method_exists(get_class(),'polylinePrecision'))
-            {
-                $precision = (int)$this->polylinePrecision();
-            }
-            $tuple = 2;
-            if(method_exists(get_class(),'polylineTupleSize'))
-            {
-                $tuple = (int)$this->polylineTupleSize();
-            }
+            
+            list($precision,$tuple) = $this->__userOverwrites__();
+            
             // Zero fill previous point place holder
             $previous = array_fill(0,$tuple,0);
             
@@ -97,16 +90,9 @@ namespace emcconville\Polyline
         public function decodeString($string)
         {
             assert(is_string($string));
-            $precision = 5;
-            if(method_exists(get_class(),'polylinePrecision'))
-            {
-                $precision = (int)$this->polylinePrecision();
-            }
-            $tuple = 2;
-            if(method_exists(get_class(),'polylineTupleSize'))
-            {
-                $tuple = (int)$this->polylineTupleSize();
-            }
+            
+            list($precision,$tuple) = $this->__userOverwrites__();
+            
             $points = array();
             $index = $i = 0;
             $previous = array_fill(0,$tuple,0);
@@ -128,6 +114,40 @@ namespace emcconville\Polyline
                 $points = array_chunk($points,$tuple);
             }
             return $points;
+        }
+        
+        /**
+         * Scan & call host class for user overwrite method.
+         * 
+         * ::polylinePrecision
+         * ::polylineTupleSize
+         *
+         * @return array [(int)precision,(int)tuple]
+         */
+        public function __userOverwrites__()
+        {
+            $cfg = array(
+                'precision' => 5,
+                'tuple'     => 2
+            );
+            
+            $cfgMethods = array(
+                'precision' => 'polylinePrecision',
+                'tuple'     => 'polylineTupleSize'
+            );
+            
+            $whoami = get_class(); // Traits should be late-static binding
+            
+            foreach($cfgMethods as $key => $method)
+            {
+                if(method_exists($whoami,$method))
+                {
+                    $method = array($whoami,$method);
+                    $cfg[$key] = (int)forward_static_call($method);
+                }
+            }
+            
+            return array_values($cfg);
         }
     }
 }
