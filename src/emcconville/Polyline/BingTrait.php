@@ -92,13 +92,13 @@ namespace emcconville\Polyline
          * Convert ANSI string into array of points
          *
          * @link http://msdn.microsoft.com/en-us/library/dn306801.aspx
-         * @param string $encoded
+         * @param string $string
          * @return array or FALSE on failure
          */
-        public function decodeString($str)
+        public function decodeString($string)
         {
-            assert(is_string($str));
-            $length   = strlen($str);
+            assert(is_string($string));
+            $length   = strlen($string);
             $cursor   = 0;
             $previous = array(0,0);
             $points   = array();
@@ -109,7 +109,7 @@ namespace emcconville\Polyline
                 while(true)
                 {
                     // Read input
-                    $remainder = strpos(BING_SAFE_CHARACTERS,$str[$cursor++]);
+                    $remainder = strpos(BING_SAFE_CHARACTERS,$string[$cursor++]);
                     if( $remainder === FALSE )
                         return FALSE;
                     // Mask top bit and shift by bytes read

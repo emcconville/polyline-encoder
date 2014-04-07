@@ -1,6 +1,6 @@
 <?php
 
-class GooglePolylineBadInput
+class GooglePolylineBadInput implements emcconville\Polyline\PolylineEncoderInterface
 {
     use emcconville\Polyline\GoogleTrait;
 }

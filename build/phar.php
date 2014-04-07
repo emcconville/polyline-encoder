@@ -27,7 +27,7 @@ define('ROOT_DIR',realpath(__DIR__.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR
 define('SRC_DIR',ROOT_DIR.'src'.DIRECTORY_SEPARATOR);
 define('EXT','.phar');
 define('PACKAGE_NAME','polyline-encoder');
-define('PACKAGE_VERSION',trim(`git describe`));
+define('PACKAGE_VERSION',trim(`git describe 2>/dev/null || echo "undefined"`));
 define('PACKAGE',PACKAGE_NAME.'-'.PACKAGE_VERSION);
 define('PACKAGE_PHAR',PACKAGE.EXT);
 
@@ -50,6 +50,7 @@ foreach($matches as $stub)
 // traits for immediate use.
 $main=<<<END_OF_MAIN
 <?php
+require_once('phar://polyline-encoder.phar/PolylineEncoderInterface.php');
 require_once('phar://polyline-encoder.phar/BingTrait.php');
 require_once('phar://polyline-encoder.phar/GoogleTrait.php');
 __HALT_COMPILER();

@@ -1,6 +1,6 @@
 <?php
 
-class GooglePolylineHacking
+class GooglePolylineHacking implements emcconville\Polyline\PolylineEncoderInterface
 {
     use emcconville\Polyline\GoogleTrait;
     private function polylinePrecision()
