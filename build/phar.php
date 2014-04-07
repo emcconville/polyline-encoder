@@ -27,7 +27,7 @@ define('ROOT_DIR',realpath(__DIR__.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR
 define('SRC_DIR',ROOT_DIR.'src'.DIRECTORY_SEPARATOR);
 define('EXT','.phar');
 define('PACKAGE_NAME','polyline-encoder');
-define('PACKAGE_VERSION','1.0.2');
+define('PACKAGE_VERSION',trim(`git describe`));
 define('PACKAGE',PACKAGE_NAME.'-'.PACKAGE_VERSION);
 define('PACKAGE_PHAR',PACKAGE.EXT);
 
@@ -42,8 +42,8 @@ $matches   = new RegexIterator($iterator,'!\.php$!');
 $build->startBuffering();
 foreach($matches as $stub)
 {
-    $stubFilename = basename($stub);
-    $stubContent  = php_strip_whitespace($stub);
+    $stubFilename = basename($stub); // No need to keep directory structure
+    $stubContent  = php_strip_whitespace($stub); // Minify code
     $build->addFromString($stubFilename,$stubContent);
 }
 // Nothing special, or any need for autoload. Just include the the two 
@@ -52,9 +52,6 @@ $main=<<<END_OF_MAIN
 <?php
 require_once('phar://polyline-encoder.phar/BingTrait.php');
 require_once('phar://polyline-encoder.phar/GoogleTrait.php');
-if(isset(\$argc) && basename(__FILE__) == basename(\$argv[0])):
-print "polyline-encoder 1.0.2 : 2014 Eric McConville https://github.com/emcconville/polyline-encoder\n";
-endif;
 __HALT_COMPILER();
 END_OF_MAIN;
 $build->setStub($main);
