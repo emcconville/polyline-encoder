@@ -63,7 +63,7 @@ namespace emcconville\Polyline
             
             foreach($points as $number) {
                 $number = (float)($number);
-                $number = floor($number * pow(10, $precision));
+                $number = (int)round($number * pow(10, $precision));
                 $diff = $number - $previous[$index % $tuple];
                 $previous[$index % $tuple] = $number;
                 $number = $diff;
