@@ -13,6 +13,10 @@
     "require": {
         "php": ">=5.4"
     },
+    "require-dev" : {
+        "phpunit/phpunit": "4.4.*",
+        "satooshi/php-coveralls": "dev-master"
+    },
     "replace" : {
         "emcconville/google-map-polyline-encoding-tool" : "*"
     },
